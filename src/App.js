@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 const App = () => {
   const [data, setData] = useState([]);
+  const [formattedData, setFormattedData] = useState([]);
   const [initialFetch, setInitialFetch] = useState(false);
-  //const [bigArr, setBigArr] = useState([]);
+
   useEffect(() => {
     fetch('https://fww-demo.herokuapp.com/')
       .then(res => res.json())
@@ -13,19 +14,34 @@ const App = () => {
       })
   }, [initialFetch]);
 
-  const sortNames = (val) => {
-    const stateArr = data.map(e => e.state).map(el => el.map(element => element.users.sort((a, b) => a.fullName - b.fullName)));
-    console.log('sorttt', stateArr)
-    // console.log(data)
-    console.log('dataaa ', data);
-    let batak = [...data];
-    console.log(data)
-  }
-
   let bigArr = [];
 
+  const formatData = (arr) => {
+    let containerArr = [];
+    let dataObj;
+    arr.map(e =>
+      e.state.map(el => (
+        el.users.map(element => {
+          dataObj = {
+            fullName: element.fullName,
+            balance: element.balance,
+            isActive: '' + element.isActive,
+            registered: element.registered,
+            name: el.name,
+            country: e.country
+          }
+          containerArr.push(dataObj)
+        }
+        )
+      )
+      )
+    )
+    setFormattedData(containerArr);
+    console.log('jasam format', formattedData);
+  }
+
   useEffect(() => {
-    console.log(bigArr)
+    formatData(data)
   }, [data])
   return (
     <div className="view">
@@ -37,9 +53,6 @@ const App = () => {
           <p>Test assignment</p>
         </div>
       </div>
-      <button onClick={() => sortNames()}>
-        ajjj
-      </button>
       {
         !initialFetch &&
         <div className="loading-container">
@@ -84,28 +97,28 @@ const App = () => {
                     }
                     bigArr.push(obj)
                     return (
-                    <tr>
-                      <td>
-                        {element.fullName}
-                      </td>
-                      <td>
-                        {element.balance}
-                      </td>
-                      <td>
-                        {'' + element.isActive}
-                      </td>
-                      <td>
-                        {element.registered}
-                      </td>
-                      <td>
-                        {el.name}
-                      </td>
-                      <td>
-                        {e.country}
-                      </td>
-                    </tr>
-                  )
-                    })
+                      <tr>
+                        <td>
+                          {element.fullName}
+                        </td>
+                        <td>
+                          {element.balance}
+                        </td>
+                        <td>
+                          {'' + element.isActive}
+                        </td>
+                        <td>
+                          {element.registered}
+                        </td>
+                        <td>
+                          {el.name}
+                        </td>
+                        <td>
+                          {e.country}
+                        </td>
+                      </tr>
+                    )
+                  })
                 ))
               )}
           </table>
