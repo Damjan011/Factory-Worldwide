@@ -13,7 +13,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
     const sortedItems = useMemo(() => {
       let sortableItems = [...items];
       if (inputValue.toString() === '') {
-        setNoData(false)
+        setNoData(false);
         if (sortConfig !== null) {
           sortableItems.sort((a, b) => {
             if (a[sortConfig.key] < b[sortConfig.key]) {
