@@ -1,0 +1,17 @@
+.row-view-area {
+  animation: entry 1s ease;
+}
+
+.row-view-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.row-view-label {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0 10px 0;
+}

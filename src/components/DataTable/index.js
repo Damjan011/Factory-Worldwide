@@ -1,5 +1,7 @@
 import React, { useRef, useState, useMemo } from 'react';
 import ArrowUp from '../../assets/images/arrow-bold-top@2x.png';
+import NoData from '../NoData';
+import './style.css';
 
 const DataTable = ({ initialFetch, formattedData }) => {
   const [inputValue, setInputValue] = useState('');
@@ -48,10 +50,8 @@ const DataTable = ({ initialFetch, formattedData }) => {
       setSortConfig({ key, direction });
     };
     return { items: sortedItems, requestSort, sortConfig };
-
   };
   const { items, requestSort, sortConfig } = useSortableData(formattedData);
-
   const getClassNamesFor = (name) => {
     if (!sortConfig) {
       return;
@@ -66,9 +66,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
             <th style={{ width: '243px' }}>
               <div className="th-inner">
                 <p>Full Name</p>
-                <div onClick={() => {
-                  requestSort('fullName')
-                }}
+                <div onClick={() => requestSort('fullName')}
                   className={`${getClassNamesFor('fullName')} img-wrapper`}>
                   <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
@@ -81,9 +79,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
             <th style={{ width: '137px' }}>
               <div className="th-inner">
                 <p>Balance</p>
-                <div onClick={() => {
-                  requestSort('balance')
-                }}
+                <div onClick={() => requestSort('balance')}
                   className={`${getClassNamesFor('balance')} img-wrapper`}>
                   <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
@@ -96,9 +92,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
             <th style={{ width: '123px' }}>
               <div className="th-inner">
                 <p>Active</p>
-                <div onClick={() => {
-                  requestSort('isActive')
-                }}
+                <div onClick={() => requestSort('isActive')}
                   className={`${getClassNamesFor('isActive')} img-wrapper`}>
                   <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
@@ -111,9 +105,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
             <th style={{ width: '225px' }}>
               <div className="th-inner">
                 <p>Registered</p>
-                <div onClick={() => {
-                  requestSort('registered')
-                }}
+                <div onClick={() => requestSort('registered')}
                   className={`${getClassNamesFor('registered')} img-wrapper`}>
                   <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
@@ -126,9 +118,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
             <th style={{ width: '177px' }}>
               <div className="th-inner">
                 <p>State</p>
-                <div onClick={() => {
-                  requestSort('name')
-                }}
+                <div onClick={() => requestSort('name')}
                   className={`${getClassNamesFor('name')} img-wrapper`}>
                   <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
@@ -141,9 +131,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
             <th style={{ width: '140px' }}>
               <div className="th-inner">
                 <p>Country</p>
-                <div onClick={() => {
-                  requestSort('country')
-                }}
+                <div onClick={() => requestSort('country')}
                   className={`${getClassNamesFor('country')} img-wrapper`}>
                   <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
@@ -178,14 +166,12 @@ const DataTable = ({ initialFetch, formattedData }) => {
                   </td>
                 </tr>
               )
-            })}
+            })
+          }
         </table>
-        {
-          noData &&
-          <div className="no-data">
-            <p>No data</p>
-          </div>
-        }
+        <NoData
+          noData={noData}
+        />
       </div>
     )
   }

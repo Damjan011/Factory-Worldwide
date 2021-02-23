@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable from './components/DataTable';
 import Loader from './components/Loader';
 import RowView from './components/RowView';
+import Title from './components/Title';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -43,28 +44,23 @@ const App = () => {
 
   useEffect(() => {
     formatData(data)
-  }, [data, rowView])
+  }, [data, rowView]);
 
   return (
     <div className="view">
-      <div className="heading-area">
-        <div className="main-label">
-          <p>Factory Worldwide</p>
-        </div>
-        <div className="main-text">
-          <p>Test assignment</p>
-        </div>
-      </div>
-
+      <Title
+        title='Factory Worldwide'
+        description='Test Assignment'
+      />
+      <Loader
+        message='Loading...'
+        initialFetch={initialFetch}
+      />
       <RowView
         initialFetch={initialFetch}
         rowView={rowView}
         setRowView={setRowView}
         totalCount={totalCount} />
-      <Loader
-        message='Loading...'
-        initialFetch={initialFetch}
-      />
       <DataTable
         setFormattedData={setFormattedData}
         initialFetch={initialFetch}
