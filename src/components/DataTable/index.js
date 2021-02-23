@@ -4,6 +4,7 @@ import ArrowUp from '../../assets/images/arrow-bold-top@2x.png';
 const DataTable = ({ initialFetch, formattedData }) => {
   const [inputValue, setInputValue] = useState('');
   const [noData, setNoData] = useState(false);
+
   const ref = useRef();
   const useSortableData = (items, config = null) => {
     const [sortConfig, setSortConfig] = useState(config);
@@ -24,16 +25,11 @@ const DataTable = ({ initialFetch, formattedData }) => {
         }
         return sortableItems;
       } else {
-        let newcopy = [...items]
-        const filterData = (arr) => {
-          return arr.filter(e => e[sortConfig.key].toLowerCase().includes(inputValue));
-        }
-        sortableItems = filterData(newcopy);
-        console.log(sortableItems.length)
+        let newCopy = [...items]
+        sortableItems = newCopy.filter(e => e[sortConfig.key].toLowerCase().includes(inputValue));
         if (sortableItems.length === 0) {
           setNoData(true)
-        } 
-
+        }
         return sortableItems;
       }
     }, [items, sortConfig]);
@@ -52,7 +48,7 @@ const DataTable = ({ initialFetch, formattedData }) => {
       setSortConfig({ key, direction });
     };
     return { items: sortedItems, requestSort, sortConfig };
-    
+
   };
   const { items, requestSort, sortConfig } = useSortableData(formattedData);
 
@@ -82,18 +78,14 @@ const DataTable = ({ initialFetch, formattedData }) => {
                 requestSort('fullName', true);
               }} ref={ref}></input>
             </th>
-
-
-
-
-            <th style={{width: '137px'}}>
+            <th style={{ width: '137px' }}>
               <div className="th-inner">
                 <p>Balance</p>
                 <div onClick={() => {
                   requestSort('balance')
                 }}
                   className={`${getClassNamesFor('balance')} img-wrapper`}>
-                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                  <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
               </div>
               <input onChange={e => {
@@ -101,14 +93,14 @@ const DataTable = ({ initialFetch, formattedData }) => {
                 requestSort('balance', true);
               }} ref={ref}></input>
             </th>
-            <th style={{width: '123px'}}>
+            <th style={{ width: '123px' }}>
               <div className="th-inner">
                 <p>Active</p>
                 <div onClick={() => {
                   requestSort('isActive')
                 }}
                   className={`${getClassNamesFor('isActive')} img-wrapper`}>
-                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                  <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
               </div>
               <input onChange={e => {
@@ -116,22 +108,14 @@ const DataTable = ({ initialFetch, formattedData }) => {
                 requestSort('isActive', true);
               }} ref={ref}></input>
             </th>
-
-
-
-
-
-
-
-
-            <th style={{width: '225px'}}>
+            <th style={{ width: '225px' }}>
               <div className="th-inner">
                 <p>Registered</p>
                 <div onClick={() => {
                   requestSort('registered')
                 }}
                   className={`${getClassNamesFor('registered')} img-wrapper`}>
-                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                  <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
               </div>
               <input onChange={e => {
@@ -139,30 +123,14 @@ const DataTable = ({ initialFetch, formattedData }) => {
                 requestSort('registered', true);
               }} ref={ref}></input>
             </th>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <th style={{width: '177px'}}>
+            <th style={{ width: '177px' }}>
               <div className="th-inner">
                 <p>State</p>
                 <div onClick={() => {
                   requestSort('name')
                 }}
                   className={`${getClassNamesFor('name')} img-wrapper`}>
-                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                  <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
               </div>
               <input onChange={e => {
@@ -170,22 +138,14 @@ const DataTable = ({ initialFetch, formattedData }) => {
                 requestSort('name', true);
               }} ref={ref}></input>
             </th>
-
-
-
-
-
-
-
-
-            <th style={{width: '140px'}}>
+            <th style={{ width: '140px' }}>
               <div className="th-inner">
                 <p>Country</p>
                 <div onClick={() => {
                   requestSort('country')
                 }}
                   className={`${getClassNamesFor('country')} img-wrapper`}>
-                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                  <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
                 </div>
               </div>
               <input onChange={e => {
@@ -194,7 +154,6 @@ const DataTable = ({ initialFetch, formattedData }) => {
               }} ref={ref}></input>
             </th>
           </tr>
-
           {
             items.map(el => {
               return (
@@ -221,11 +180,11 @@ const DataTable = ({ initialFetch, formattedData }) => {
               )
             })}
         </table>
-
-        { noData &&
+        {
+          noData &&
           <div className="no-data">
-          <p>No data</p>
-        </div>
+            <p>No data</p>
+          </div>
         }
       </div>
     )

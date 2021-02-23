@@ -2,7 +2,7 @@ import React from 'react';
 import './style.css';
 
 const Loader = ({ initialFetch, message }) => {
-  if (initialFetch) {
+  if (!initialFetch) {
     return (
       <div className="loading-container">
         <div className="loader">

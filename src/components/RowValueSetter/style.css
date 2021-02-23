@@ -1,0 +1,12 @@
+.row-option {
+  padding: 5px;
+  margin: 2px;
+  border: 1px solid white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.active {
+  background:  #3498db;
+  transition: all 0.2s ease;
+}
