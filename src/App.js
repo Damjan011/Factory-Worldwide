@@ -33,19 +33,8 @@ const App = () => {
         })
       ))
     )
-    setFormattedData(containerArr);
-  }
-
-  const sortData = (arr, key) => {
-    return arr.sort((a, b) => {
-      if (a[key] < b[key]) {
-        return -1;
-      }
-      if (a[key] > b[key]) {
-        return 1;
-      }
-      return 0;
-    });
+    
+    setFormattedData(containerArr.slice(0, 20));
   }
 
   useEffect(() => {
@@ -74,14 +63,9 @@ const App = () => {
           </div>
         </div>
       }
-      <DataTable initialFetch={initialFetch} formattedData={formattedData} />
-
+      <DataTable setFormattedData={setFormattedData} initialFetch={initialFetch} formattedData={formattedData} />
     </div>
   );
 }
 
 export default App;
-
-{/* // onClick={() => {
-//   setFormattedData(prev => sortData([...prev], 'fullName') */}
-
