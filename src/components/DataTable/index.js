@@ -1,36 +1,43 @@
-import React, {useRef, useState, useMemo } from 'react';
-import ArrowUp from  '../../assets/images/arrow-bold-top@2x.png';
+import React, { useRef, useState, useMemo } from 'react';
+import ArrowUp from '../../assets/images/arrow-bold-top@2x.png';
 
 const DataTable = ({ initialFetch, formattedData }) => {
   const [inputValue, setInputValue] = useState('');
+  const [noData, setNoData] = useState(false);
   const ref = useRef();
   const useSortableData = (items, config = null) => {
     const [sortConfig, setSortConfig] = useState(config);
     const sortedItems = useMemo(() => {
       let sortableItems = [...items];
-      if(inputValue === '') {
-      if (sortConfig !== null) {
-        sortableItems.sort((a, b) => {
-          if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? -1 : 1;
-          }
-          if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? 1 : -1;
-          }
-          return 0;
-        });
-      } 
-      return sortableItems;
-    } else {
-      let newcopy = [...items]
-      const filterData = (arr) => {
-        return arr.filter(e => e[sortConfig.key].toLowerCase().includes(inputValue));
+      if (inputValue.toString() === '') {
+        setNoData(false)
+        if (sortConfig !== null) {
+          sortableItems.sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+              return sortConfig.direction === 'ascending' ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+              return sortConfig.direction === 'ascending' ? 1 : -1;
+            }
+            return 0;
+          });
+        }
+        return sortableItems;
+      } else {
+        let newcopy = [...items]
+        const filterData = (arr) => {
+          return arr.filter(e => e[sortConfig.key].toLowerCase().includes(inputValue));
+        }
+        sortableItems = filterData(newcopy);
+        console.log(sortableItems.length)
+        if (sortableItems.length === 0) {
+          setNoData(true)
+        } 
+
+        return sortableItems;
       }
-      sortableItems = filterData(newcopy);
-      return sortableItems;
-    }
     }, [items, sortConfig]);
-    const requestSort = (key) => {
+    const requestSort = (key, isInput) => {
       let direction = 'ascending';
       if (
         sortConfig &&
@@ -39,12 +46,16 @@ const DataTable = ({ initialFetch, formattedData }) => {
       ) {
         direction = 'descending';
       }
+      if (isInput) {
+        direction = '';
+      }
       setSortConfig({ key, direction });
     };
     return { items: sortedItems, requestSort, sortConfig };
+    
   };
   const { items, requestSort, sortConfig } = useSortableData(formattedData);
-  
+
   const getClassNamesFor = (name) => {
     if (!sortConfig) {
       return;
@@ -56,63 +67,134 @@ const DataTable = ({ initialFetch, formattedData }) => {
       <div className="table-container">
         <table>
           <tr>
-            <th>
-                <div className="th-inner">
-              <p>Full Name</p>
-              <div onClick={() => {requestSort('fullName')
-            console.log(ref.current.value)}}
-              className={`${getClassNamesFor('fullName')} img-wrapper`}>
-              <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
-              </div>
+            <th style={{ width: '243px' }}>
+              <div className="th-inner">
+                <p>Full Name</p>
+                <div onClick={() => {
+                  requestSort('fullName')
+                }}
+                  className={`${getClassNamesFor('fullName')} img-wrapper`}>
+                  <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                </div>
               </div>
               <input onChange={e => {
                 setInputValue(e.target.value.toLowerCase());
-                requestSort('fullName')
-                }} ref={ref}></input>
-            
-          </th>
-            <th onClick={() => requestSort('balance')}
-              className={getClassNamesFor('balance')}>
-                <div className="th-inner">
-              <p>Balance</p>
-              <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
-              </div>
+                requestSort('fullName', true);
+              }} ref={ref}></input>
+            </th>
 
+
+
+
+            <th style={{width: '137px'}}>
+              <div className="th-inner">
+                <p>Balance</p>
+                <div onClick={() => {
+                  requestSort('balance')
+                }}
+                  className={`${getClassNamesFor('balance')} img-wrapper`}>
+                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                </div>
+              </div>
               <input onChange={e => {
                 setInputValue(e.target.value.toLowerCase());
-                requestSort('balance');
-                }} ref={ref}></input>
-            
-          </th>
-            <th onClick={() => requestSort('isActive')}
-              className={getClassNamesFor('isActive')}>
-                <div className="th-inner">
-              <p>Active</p>
-              <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                requestSort('balance', true);
+              }} ref={ref}></input>
+            </th>
+            <th style={{width: '123px'}}>
+              <div className="th-inner">
+                <p>Active</p>
+                <div onClick={() => {
+                  requestSort('isActive')
+                }}
+                  className={`${getClassNamesFor('isActive')} img-wrapper`}>
+                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                </div>
               </div>
-          </th>
-            <th onClick={() => requestSort('registered')}
-              className={getClassNamesFor('registered')}>
-                <div className="th-inner">
-              <p>Registered</p>
-              <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+              <input onChange={e => {
+                setInputValue(e.target.value.toLowerCase());
+                requestSort('isActive', true);
+              }} ref={ref}></input>
+            </th>
+
+
+
+
+
+
+
+
+            <th style={{width: '225px'}}>
+              <div className="th-inner">
+                <p>Registered</p>
+                <div onClick={() => {
+                  requestSort('registered')
+                }}
+                  className={`${getClassNamesFor('registered')} img-wrapper`}>
+                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                </div>
               </div>
-          </th>
-            <th onClick={() => requestSort('name')}
-              className={getClassNamesFor('name')}>
-                <div className="th-inner">
-              <p>State</p>
-              <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+              <input onChange={e => {
+                setInputValue(e.target.value.toLowerCase());
+                requestSort('registered', true);
+              }} ref={ref}></input>
+            </th>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <th style={{width: '177px'}}>
+              <div className="th-inner">
+                <p>State</p>
+                <div onClick={() => {
+                  requestSort('name')
+                }}
+                  className={`${getClassNamesFor('name')} img-wrapper`}>
+                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                </div>
               </div>
-          </th>
-            <th onClick={() => requestSort('country')}
-              className={getClassNamesFor('country')}>
-                <div className="th-inner">
-              <p>Country</p>
-              <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+              <input onChange={e => {
+                setInputValue(e.target.value.toLowerCase());
+                requestSort('name', true);
+              }} ref={ref}></input>
+            </th>
+
+
+
+
+
+
+
+
+            <th style={{width: '140px'}}>
+              <div className="th-inner">
+                <p>Country</p>
+                <div onClick={() => {
+                  requestSort('country')
+                }}
+                  className={`${getClassNamesFor('country')} img-wrapper`}>
+                <img src={ArrowUp} className="arrow" alt="Arrow indicator" />
+                </div>
               </div>
-          </th>
+              <input onChange={e => {
+                setInputValue(e.target.value.toLowerCase());
+                requestSort('country', true);
+              }} ref={ref}></input>
+            </th>
           </tr>
+
           {
             items.map(el => {
               return (
@@ -139,6 +221,12 @@ const DataTable = ({ initialFetch, formattedData }) => {
               )
             })}
         </table>
+
+        { noData &&
+          <div className="no-data">
+          <p>No data</p>
+        </div>
+        }
       </div>
     )
   }

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from './components/DataTable';
+import Loader from './components/Loader';
 
 const App = () => {
   const [data, setData] = useState([]);
   const [formattedData, setFormattedData] = useState([]);
   const [initialFetch, setInitialFetch] = useState(false);
+  const [rowView, setRowView] = useState(20);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     fetch('https://fww-demo.herokuapp.com/')
@@ -33,13 +36,13 @@ const App = () => {
         })
       ))
     )
-    
-    setFormattedData(containerArr.slice(0, 20));
+    setTotalCount(containerArr.length);
+    setFormattedData(containerArr.slice(0, rowView));
   }
 
   useEffect(() => {
     formatData(data)
-  }, [data])
+  }, [data, rowView])
 
   return (
     <div className="view">
@@ -51,19 +54,35 @@ const App = () => {
           <p>Test assignment</p>
         </div>
       </div>
-      {
-        !initialFetch &&
-        <div className="loading-container">
-          <div className="loader">
+
+      <div className="row-view-area">
+        <div className="row-view-label">
+          View:
+  </div>
+        <div className="row-view-options">
+          <div onClick={() => setRowView(20)} className={`${rowView === 20 ? 'active' : ''} row-option`}>
+            <p>20 rows</p>
           </div>
-          <div class="loading-label">
-            <p>
-              LOADING...
-          </p>
+          <div onClick={() => setRowView(50)} className={`${rowView === 50 ? 'active' : ''} row-option`}>
+            <p>50 rows</p>
+          </div>
+          <div onClick={() => setRowView(100)} className={`${rowView === 100 ? 'active' : ''} row-option`}>
+            <p>100 rows</p>
+          </div>
+          <div onClick={() => setRowView(totalCount)} className={`${rowView === totalCount ? 'active' : ''} row-option`}>
+            <p>All rows ({totalCount})</p>
           </div>
         </div>
-      }
-      <DataTable setFormattedData={setFormattedData} initialFetch={initialFetch} formattedData={formattedData} />
+      </div>
+      <Loader
+        message='Loading...'
+        initialFetch={initialFetch}
+      />
+      <DataTable
+        setFormattedData={setFormattedData}
+        initialFetch={initialFetch}
+        formattedData={formattedData}
+      />
     </div>
   );
 }
