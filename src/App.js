@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import DataTable from './components/DataTable';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -13,8 +14,6 @@ const App = () => {
         setInitialFetch(true);
       })
   }, [initialFetch]);
-
-  let bigArr = [];
 
   const formatData = (arr) => {
     let containerArr = [];
@@ -31,18 +30,28 @@ const App = () => {
             country: e.country
           }
           containerArr.push(dataObj)
-        }
-        )
-      )
-      )
+        })
+      ))
     )
     setFormattedData(containerArr);
-    console.log('jasam format', formattedData);
+  }
+
+  const sortData = (arr, key) => {
+    return arr.sort((a, b) => {
+      if (a[key] < b[key]) {
+        return -1;
+      }
+      if (a[key] > b[key]) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   useEffect(() => {
     formatData(data)
   }, [data])
+
   return (
     <div className="view">
       <div className="heading-area">
@@ -56,76 +65,23 @@ const App = () => {
       {
         !initialFetch &&
         <div className="loading-container">
-          LOADING...
+          <div className="loader">
           </div>
-      }
-      {
-        initialFetch &&
-        <div className="table-container">
-          <table>
-            <tr>
-              <th>
-                Full Name
-                </th>
-              <th>
-                Balance
-                </th>
-              <th>
-                Active
-                </th>
-              <th>
-                Registered
-                </th>
-              <th>
-                State
-                </th>
-              <th>
-                Country
-                </th>
-            </tr>
-            {
-              data.map(e =>
-                e.state.map(el => (
-                  el.users.map(element => {
-                    let obj = {
-                      fullName: element.fullName,
-                      balance: element.balance,
-                      isActive: '' + element.isActive,
-                      registered: element.registered,
-                      name: el.name,
-                      country: e.country
-                    }
-                    bigArr.push(obj)
-                    return (
-                      <tr>
-                        <td>
-                          {element.fullName}
-                        </td>
-                        <td>
-                          {element.balance}
-                        </td>
-                        <td>
-                          {'' + element.isActive}
-                        </td>
-                        <td>
-                          {element.registered}
-                        </td>
-                        <td>
-                          {el.name}
-                        </td>
-                        <td>
-                          {e.country}
-                        </td>
-                      </tr>
-                    )
-                  })
-                ))
-              )}
-          </table>
+          <div class="loading-label">
+            <p>
+              LOADING...
+          </p>
+          </div>
         </div>
       }
+      <DataTable initialFetch={initialFetch} formattedData={formattedData} />
+
     </div>
   );
 }
 
 export default App;
+
+{/* // onClick={() => {
+//   setFormattedData(prev => sortData([...prev], 'fullName') */}
+
